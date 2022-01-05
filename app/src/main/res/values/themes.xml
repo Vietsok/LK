@@ -15,11 +15,26 @@
     </style>
 
     <style name="Theme.LK.NoActionBar">
-        <item name="windowActionBar">false</item>
+
+
+        <!--this property will help hide ActionBar-->
         <item name="windowNoTitle">true</item>
+        <!--currently, I don't know why we need this property since use windowNoTitle only already help hide actionbar. I use it because it is used inside Theme.AppCompat.Light.NoActionBar (you can check Theme.AppCompat.Light.NoActionBar code). I think there are some missing case that I don't know-->
+        <item name="windowActionBar">true</item>
+        <!--this property is used for hiding StatusBar-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">true</item>
+
+        <!--
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item> -->
     </style>
 
     <style name="Theme.LK.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.LK.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
 </resources>

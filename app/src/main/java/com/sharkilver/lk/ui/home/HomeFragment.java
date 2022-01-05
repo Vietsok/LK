@@ -82,24 +82,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
 
-
         // Add a marker in Sydney and move the camera
-        LatLng TO_LOCATION = new LatLng(-34, 151);
-        LatLng TO_DESTINATION = new LatLng(-34, 151.2);
-
-        mMap.addMarker(new MarkerOptions().position(TO_DESTINATION)
-                .title("Destination Title")
-                .snippet("Destination Description"));
-
-        mMap.addMarker(new MarkerOptions().position(TO_LOCATION)
-                .title("Destination Title")
-                .snippet("Destination Description"));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(TO_LOCATION, 40));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
     }
 
     private void fetchLastLocation() {
+
+double Destination_Lat = 48.9250858;
+        double Destination_Lng =2.4090749;
+        LatLng TO_DESTINATION = new LatLng(Destination_Lat,Destination_Lng);
+
+
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -110,7 +102,21 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
             if (location != null) {
                 Location currentLocation = location;
                 Toast.makeText(getContext(), currentLocation.getLatitude()
-                        + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                        + " " + currentLocation.getLongitude(), Toast.LENGTH_LONG).show();
+
+                LatLng TO_LOCATION = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                mMap.addMarker(new MarkerOptions().position(TO_LOCATION)
+                        .title("Me")
+                        .snippet("Départ Lat:"+currentLocation.getLatitude()+" Lng:"+currentLocation.getLongitude()));
+
+                mMap.addMarker(new MarkerOptions().position(TO_DESTINATION)
+                        .title("Destination Title")
+                        .snippet("Destination Lat:"+Destination_Lat+" Lng:"+Destination_Lng));
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(TO_LOCATION, 14));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+
                 SupportMapFragment supportMapFragment = (SupportMapFragment)
                         getChildFragmentManager().findFragmentById(R.id.map);
                 supportMapFragment.getMapAsync(HomeFragment.this);

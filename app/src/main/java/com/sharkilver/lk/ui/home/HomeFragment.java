@@ -1,7 +1,11 @@
 package com.sharkilver.lk.ui.home;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +29,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
@@ -112,7 +118,8 @@ double Destination_Lat = 48.9250858;
 
                 mMap.addMarker(new MarkerOptions().position(TO_DESTINATION)
                         .title("Destination Title")
-                        .snippet("Destination Lat:"+Destination_Lat+" Lng:"+Destination_Lng));
+                        .snippet("Destination Lat:"+Destination_Lat+" Lng:"+Destination_Lng)
+                .icon(BitmapFromVector(getContext(), R.drawable.ic_baseline_directions_car_24)));
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(TO_LOCATION, 14));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
@@ -122,6 +129,32 @@ double Destination_Lat = 48.9250858;
                 supportMapFragment.getMapAsync(HomeFragment.this);
             }
         });
+    }
+
+
+
+    /** change vector -> Bitmap **/
+
+    private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {
+        // below line is use to generate a drawable.
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+
+        // below line is use to set bounds to our vector drawable.
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+
+        // below line is use to create a bitmap for our
+        // drawable which we have added.
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+
+        // below line is use to add bitmap in our canvas.
+        Canvas canvas = new Canvas(bitmap);
+
+        // below line is use to draw our
+        // vector drawable in canvas.
+        vectorDrawable.draw(canvas);
+
+        // after generating our bitmap we are returning our bitmap.
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }
